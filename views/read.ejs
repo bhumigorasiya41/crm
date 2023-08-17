@@ -1,0 +1,651 @@
+<! DOCTYPE html>
+    <html lang="en">
+
+    <head>
+        <title> student detail </title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+        <!-- font awesome cdn link -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    </head>
+    <style>
+        @import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";
+
+        .hm-gradient {
+            background-image: linear-gradient(to top, #f3e7e9 0%, #e3eeff 99%, #e3eeff 100%);
+        }
+
+        .darken-grey-text {
+            color: #2E2E2E;
+        }
+
+        .input-group.md-form.form-sm.form-2 input {
+            border: 1px solid #bdbdbd;
+            border-top-left-radius: 0.25rem;
+            border-bottom-left-radius: 0.25rem;
+        }
+
+        .input-group.md-form.form-sm.form-2 input.purple-border {
+            border: 1px solid #9e9e9e;
+        }
+
+        .input-group.md-form.form-sm.form-2 input[type=text]:focus:not([readonly]).purple-border {
+            border: 1px solid #ba68c8;
+            box-shadow: none;
+        }
+
+        .form-2 .input-group-addon {
+            border: 1px solid #ba68c8;
+        }
+
+        .danger-text {
+            color: #ff3547;
+        }
+
+        .success-text {
+            color: #00C851;
+        }
+
+        .table-bordered.red-border,
+        .table-bordered.red-border th,
+        .table-bordered.red-border td {
+            border: 1px solid #ff3547 !important;
+        }
+
+        .table.table-bordered th {
+            text-align: center;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #fafafa;
+            overflow-x: hidden;
+        }
+
+        p {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.1em;
+            font-weight: 300;
+            line-height: 1.7em;
+            color: #999;
+        }
+
+        a,
+        a:focus {
+            color: inherit;
+            text-decoration: none;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+
+        .navbar {
+            padding: 15px 10px;
+            background: #fff;
+            border: none;
+            border-radius: 0;
+            margin-bottom: 40px;
+            box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar-btn {
+            box-shadow: none;
+            outline: none !important;
+            border: none;
+        }
+
+        .wrapper {
+            display: flex;
+            width: 100%;
+            align-items: stretch;
+        }
+
+        #sidebar {
+            min-width: 250px;
+            max-width: 250px;
+            background: #7386D5;
+            color: #fff;
+            transition: all 0.3s;
+        }
+
+        #sidebar.active {
+            margin-left: -250px;
+
+        }
+
+        #sidebar .sidebar-header {
+            padding: 20px;
+            background: #6d7fcc;
+        }
+
+        #sidebar ul.components {
+            padding: 20px 0;
+
+            /* border-bottom: 1px solid #47748b; */
+        }
+
+        #sidebar ul p {
+            color: #fff;
+            padding: 10px;
+        }
+
+        #sidebar ul li a {
+            padding: 10px;
+            font-size: 1.1em;
+            display: block;
+            color: #fff;
+        }
+
+        a[data-toggle="collapse"] {
+            position: relative;
+        }
+
+        .dropdown-toggle::after {
+            display: block;
+            position: absolute;
+            top: 50%;
+            right: 20px;
+            transform: translateY(-50%);
+        }
+
+        ul ul a {
+            font-size: 0.9em !important;
+            padding-left: 30px !important;
+            background: #6d7fcc;
+        }
+
+        #content,
+        #content1 {
+            width: 100%;
+            padding: 20px;
+            min-height: 100vh;
+            transition: all 0.3s;
+        }
+        .row11{
+            gap: 30px;
+            margin-bottom: 25px;
+        }
+
+        .col1 {
+            background: #fff;
+            padding: 15px;
+            border-radius: 15px;
+            padding-bottom: 0px;
+        }
+        .col1 p{
+            color: #81838e;
+        }
+
+        @media (max-width: 768px) {
+            #sidebar {
+                margin-left: -250px;
+            }
+
+            #sidebar.active {
+                margin-left: 0;
+            }
+
+            #sidebarCollapse span {
+                display: none;
+            }
+        }
+    </style>
+
+    <body>
+        <% function calculateTotalPaidFees(reports) {
+            let totalFees = 0;
+            reports.forEach(report => {
+                totalFees += parseInt(report.tfee, 10);
+            });
+            return totalFees;
+        } %>
+        <% let totalCollectedFees = 0; %>
+
+            <% usersRef.forEach(user => { %>
+                <% user.reports.forEach(report => { %>
+                    <% totalCollectedFees += parseInt(report.tfee, 10); %>
+                <% }); %>
+            <% }); %>
+        
+
+        <div class="wrapper">
+            <!-- Sidebar  -->
+            <nav id="sidebar">
+                <div class="sidebar-header">
+                    <h3>Student Details</h3>
+                </div>
+
+                <ul class="list-unstyled components ">
+                    <!-- <p>Dummy Heading</p> -->
+                    <li>
+                        <a href="/read">Student Data</a>
+                    </li>
+                    <li>
+                        <a href="" id="create">Add Student</a>
+                    </li>
+                    <li>
+                        <a href="" id="add1">Add student Fees</a>
+                    </li>
+                    <li>
+                        <a href="" id="view1">view student Fees-report</a>
+                    </li>
+                </ul>
+
+
+            </nav>
+
+            <!-- Page Content  -->
+            <div id="content">
+
+                <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                    <div class="container-fluid">
+
+                        <button type="button" id="sidebarCollapse" class="btn btn-info" style="background: #6d7fcc;">
+                            <i class="fas fa-align-left"></i>
+
+                        </button>
+
+
+
+                    </div>
+                </nav>
+                <div id="content1">
+
+
+                    <body class="hm-gradient">
+                        <main>
+                            <div class="container mt-4">
+                                <h1>Student Details</h1>
+                                <div class=" row11 d-flex">
+                                    <div class="col1 text-center">
+                                        <h5>Total Student</h5>
+                                        <p> <%= usersRef.length %></p>
+                                    </div>
+                                </div>
+                                <!-- <h4 class="me-auto">Total Students: <%= usersRef.length %></h4> -->
+                                <div class="card mb-4">
+                                    <div class="card-body">
+
+                                        <table class="table table-striped table-responsive">
+                                            <thead>
+                                                <tr>
+                                                    <th>Roll No</th>
+                                                    <th>Name</th>
+                                                    <th>Department</th>
+                                                    <th>Semester</th>
+                                                    <th>Email</th>
+                                                    <th>Address</th>
+                                                    <th></th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <% usersRef.forEach(user=> { %>
+                                                    <tr>
+                                                        <td>
+                                                            <%= user.rollno %>
+                                                        </td>
+                                                        <td>
+                                                            <%= user.name %>
+                                                        </td>
+                                                        <td>
+                                                            <%= user.dept %>
+                                                        </td>
+                                                        <td>
+                                                            <%= user.sem %>
+                                                        </td>
+                                                        <td>
+                                                            <%= user.email %>
+                                                        </td>
+                                                        <td>
+                                                            <%= user.add %>
+                                                        </td>
+                                                        <!-- <td>
+                                                            <%= calculateTotalPaidFees(user.reports) %>
+                                                        </td> -->
+                                                        <td>
+                                                            <button id="edit" class="btn btn-primary edit-button"
+                                                                onclick="edit('<%= user.name %>', '<%= user.rollno %>', '<%= user.dept %>', '<%= user.sem %>', '<%= user.email %>', '<%= user.add %>');">Edit</button>
+
+                                                        </td>
+                                                        <td>
+                                                            <form action="/delete/<%= user.email %>?_method=DELETE"
+                                                                method="POST">
+                                                                <button type="submit" class="btn btn-danger ">
+                                                                    delete
+                                                                </button>
+                                                            </form>
+                                                        </td>
+                                                    </tr>
+                                                    <% }); %>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </main>
+                    </body>
+
+
+                </div>
+            </div>
+        </div>
+       
+
+
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+        <script>
+            $(document).ready(function () {
+                $('#sidebarCollapse').on('click', function () {
+                    $('#sidebar').toggleClass('active');
+                });
+            });
+
+
+            let dsread = document.getElementById('create');
+            let dcontent1 = document.getElementById('content1');
+
+            dsread.addEventListener('click', () => {
+                event.preventDefault(); // Prevent the default anchor link behavior
+
+                dcontent1.innerHTML = `<div class="container justify-content-center">
+          <h1>add student</h1>
+          <form class="form-horizontal" role="form" action="/create" method="post">
+           
+            <div class="form-group">
+              <label for="rollno" class="col-sm-2 control-label">Roll no:</label>
+              <div class="col-sm-4">
+                <input type="text" class="form-control inputstl" id="rollno" placeholder="Enter Your roll no"
+                  name="rollno" required>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="name1" class="col-sm-2 control-label">Name</label>
+              <div class="col-sm-4">
+                <input type="text" class="form-control inputstl" id="name1" placeholder="Enter Your Full Name"
+                  name="name"  required>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label">Department</label>
+              <div class="col-sm-2">
+                <select class="form-control inputstl" id="dept" name="dept"  required>
+                  <option>Computer</option>
+                  <option>Electrical</option>
+                  <option>Civil</option>
+                  <option>EC</option>
+                  <option>Mechnical</option>
+
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label">Semester</label>
+              <div class="col-sm-2">
+                <select class="form-control inputstl" id="sem" name="sem"  required>
+                  <option>1</option>
+                  <option>2</option>
+                  <option>3</option>
+                  <option>4</option>
+                  <option>5</option>
+                  <option>6</option>
+                  <option>7</option>
+                  <option>8</option>
+
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="email1" class="col-sm-2 control-label">Email</label>
+              <div class="col-sm-5">
+                <input type="email" class="form-control inputstl" id="email1" placeholder="Enter Email" name="email"  required>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="address1" class="col-sm-2 control-label">Address</label>
+              <div class="col-sm-5">
+                <input type="text" class="form-control inputstl" id="address1" placeholder="Full Address" name="add"  required>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="col-sm-offset-2 col-sm-4">
+                <button type="submit" class="btn btn-lg btn-block btn-success">Add Student</button>
+              </div>
+            </div>
+          </form>
+        </div>`;
+            });
+
+            let dadd1 = document.getElementById('add1');
+            // let dcontent12 = document.getElementById('content1');
+
+            dadd1.addEventListener('click', () => {
+                event.preventDefault(); // Prevent the default anchor link behavior
+
+                dcontent1.innerHTML = `<div class="container justify-content-center">
+          <h1>add student  Fees</h1>
+          <form class="form-horizontal" role="form" action="/tfees" method="post">
+           
+            <div class="form-group">
+              <label class="col-sm-2 control-label">student</label>
+              <div class="col-sm-2">
+                <select class="form-control inputstl" id="email" name="email"  required>
+                  <option>select student</option>
+                  <% usersRef.forEach(user=> { %>
+                  <option><%= user.email %></option>
+                  <% }); %>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="total fees" class="col-sm-2 control-label"> Fees:</label>
+              <div class="col-sm-4">
+                <input type="number" class="form-control inputstl" id="tfee" placeholder="Enter student total fees"
+                  name="tfee" required>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="date" class="col-sm-2 control-label">Date:</label>
+              <div class="col-sm-4">
+                <input type="date" class="form-control inputstl" id="date"
+                  name="date" required>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="col-sm-2 control-label">Instalment</label>
+              <div class="col-sm-2">
+                <select class="form-control inputstl" id="in" name="in"  required>
+                  <option>1</option>
+                  <option>2</option>
+                  <option>3</option>
+                  <option>4</option>
+                  <option>5</option>
+                  <option>6</option>
+                 
+                </select>
+              </div>
+            </div>
+
+           
+
+            <div class="form-group">
+              <div class="col-sm-offset-2 col-sm-4">
+                <button type="submit" class="btn btn-lg btn-block btn-success" >Add Report</button>
+              </div>
+            </div>
+        
+          </form>
+        </div>`;
+            });
+
+            let dview1 = document.getElementById('view1');
+            ;
+
+            dview1.addEventListener('click', () => {
+                event.preventDefault(); // Prevent the default anchor link behavior
+
+                dcontent1.innerHTML = `<body class="hm-gradient">
+                        <main>
+                            <div class="container justify-content-center">
+                                <h1>Fees Report</h1>
+                                <div class=" row11 d-flex">
+                                   
+                                    <div class="col1 text-center">
+                                        <h5>Total Collected Fees</h5>
+                                        <p class="me-auto"> <%= totalCollectedFees %></p>
+                                    </div>
+                                    
+                                </div>
+                               
+                                <div class="card mb-4">
+                                <div class="card-body">
+
+                            <table class="table table-striped table-responsive">
+                            <thead>
+                            <tr>
+                                <th>Student Email</th>
+                                <th>Total paid fees</th>
+                                <th>Fees Details</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                <% usersRef.forEach(user => { %>
+                        <tr>
+                            <td><%= user.email %></td>
+                            
+                            <td>
+                            
+                                     <%= calculateTotalPaidFees(user.reports) %>
+                            </td>
+                             
+
+                            <td>
+                                <% if (user.reports.length > 0) { %>
+                                    <table class="table table-responsive">
+                                        <thead>
+                                            <tr>
+                                                <th>Fees</th>
+                                                <th>Date</th>
+                                                <th>Instalment</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <% user.reports.sort((a,b)=>b.in-a.in).forEach(report => { %>
+                                                <tr>
+                                                    <td><%= report.tfee %></td>
+                                                    <td><%= report.date %></td>
+                                                    <td><%= report.in %></td>
+                                                </tr>
+                                            <% }); %>
+                                        </tbody>
+                                    </table>
+                                <% } else { %>
+                                    No fees report available
+                                <% } %>
+                            </td>
+                            
+                        </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+                        </main>
+                    </body>
+
+          `;
+            });
+
+
+
+
+            function edit(name, rollno, dept, sem, email, add) {
+                const editForm = `
+           <form class="form-horizontal" role="form" action="/update" method="post">
+          
+            <div class="form-group">
+                <label for="rollno" class="col-sm-2 control-label">Roll no:</label>
+                <div class="col-sm-4">
+                    <input type="text"  class="form-control inputstl" id="rollno" value="${rollno}" placeholder="Enter Your roll no" name="nrollno"  required>
+                </div>
+            </div>
+                    <div class="form-group">
+                          <label for="name1" class="col-sm-2 control-label">Name</label>
+                          <div class="col-sm-4">
+                            <input type="text"  class="form-control inputstl" id="name1" value="${name}" placeholder="Enter Your Full Name" name="nname"  required>
+                          </div>
+                        </div>
+                    <div class="form-group">
+              <label class="col-sm-2 control-label">Department</label>
+              <div class="col-sm-2">
+              <select class="form-control inputstl" id="dept"  name="ndept" value="${dept}"  required>
+                <option>Computer</option>
+                <option>Electrical</option>
+                <option>Civil</option>
+                <option>EC</option>
+                <option>Mechnical</option>
+      
+              </select>          
+              </div>
+          </div>   
+          <div class="form-group">
+              <label  class="col-sm-2 control-label">Semester</label>
+              <div class="col-sm-2">
+              <select class="form-control inputstl" id="sem" name="nsem" value="${sem}"  required>
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+                <option>6</option>
+                <option>7</option>
+                <option>8</option>
+      
+              </select>          
+              </div>
+          </div>    
+            <div class="form-group">
+              <label for="email1" class="col-sm-2 control-label">Email</label>
+              <div class="col-sm-5">
+                <input type="email" class=" form-control form-control-plaintext inputstl" value="${email}"  id="email1" placeholder="Enter Email" name="email"  readonly>
+              </div>
+            </div>
+           
+            <div class="form-group">
+              <label for="address1" class="col-sm-2 control-label">Address</label>
+              <div class="col-sm-5">
+                <input type="text" class="form-control inputstl" id="address1" value="${add}"  placeholder="Full Address" name="nadd"  required>
+              </div>
+            </div>            
+            
+            <div class="form-group">
+              <div class="col-sm-offset-2 col-sm-4">
+                <button type="submit" class="btn btn-lg btn-block btn-success" >update</button>
+              </div>
+            </div>
+
+          </form>
+        `;
+                dcontent1.innerHTML = editForm;
+            }
+        </script>
+
+    </body>
+
+    </html>
